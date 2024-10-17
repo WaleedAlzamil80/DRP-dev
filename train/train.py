@@ -1,12 +1,10 @@
 from .MStrain import train as mstrain
 from .SEtrain import train as setrain
-from .enstrain import train as enstrain
 
 # Mode Factory that maps modes to classes
 TRAIN_FACTORY = {
     "mask": mstrain,
     "site": setrain,
-    "ensembel": enstrain,
 }
 
 def get_train(mode, *args, **kwargs):

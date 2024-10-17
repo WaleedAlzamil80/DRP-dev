@@ -4,9 +4,7 @@ from torch import optim
 
 import numpy as np
 
-from helpful.helpful import print_trainable_parameters, setTrainable, FreezeFirstN
 from config import dic, epochs_sch, sche_milestones
-from models.base_model import device
 import warnings
 warnings.filterwarnings("ignore")
 from tqdm import tqdm
@@ -31,9 +29,6 @@ def train(model, train_loader, test_loader, args):
     test_recall = []
     test_loss = []
 
-    if args.freeze:
-        FreezeFirstN(model, 10000)
-    print_trainable_parameters(model)
 
     print('Training started.')
 
@@ -42,11 +37,6 @@ def train(model, train_loader, test_loader, args):
         all_labels = []
         all_preds = []
         cum_loss = 0
-
-        # set more parameters
-        if args.freeze and epoch in epochs_sch.keys():
-            setTrainable(model, dic[args.base][epochs_sch[epoch]])
-            print_trainable_parameters(model)
 
         for images, labels, sites in tqdm(train_loader, desc=f'Epoch {epoch+1}/{args.num_epochs}'):
             images, labels, sites = images.to(device), labels.to(device), sites.to(device)
